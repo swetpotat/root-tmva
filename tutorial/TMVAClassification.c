@@ -13,8 +13,9 @@
 #include "TMVA/DataLoader.h"
 #include "TMVA/Tools.h"
 #include "TMVA/TMVAGui.h"
-int TMVAClassification( TString myMethodList = "" )
-{
+
+int TMVAClassification( TString myMethodList = "" ){
+
    // The explicit loading of the shared libTMVA is done in TMVAlogon.C, defined in .rootrc
    // if you use your private .rootrc, or run from a different directory, please copy the
    // corresponding lines from .rootrc
@@ -22,24 +23,27 @@ int TMVAClassification( TString myMethodList = "" )
    //
    //     mylinux~> root -l TMVAClassification.CUndefined control sequence \"
    //---------------------------------------------------------------
+
    // This loads the library
    TMVA::Tools::Instance();
+
    // Default MVA methods to be trained + tested
    std::map<std::string,int> Use;
+
    // Cut optimisation
    Use["Cuts"]            = 1;
    Use["CutsD"]           = 1;
    Use["CutsPCA"]         = 0;
    Use["CutsGA"]          = 0;
    Use["CutsSA"]          = 0;
-   //
+   
    // 1-dimensional likelihood ("naive Bayes estimator")
    Use["Likelihood"]      = 1;
-   Use["LikelihoodD"]     = 0; // the "D" extension indicates decorrelated input variables (see option strings)
-   Use["LikelihoodPCA"]   = 1; // the "PCA" extension indicates PCA-transformed input variables (see option strings)
+   Use["LikelihoodD"]     = 1; // the "D" extension indicates decorrelated input variables (see option strings)
+   Use["LikelihoodPCA"]   = 0; // the "PCA" extension indicates PCA-transformed input variables (see option strings)
    Use["LikelihoodKDE"]   = 0;
    Use["LikelihoodMIX"]   = 0;
-   //
+   
    // Mutidimensional likelihood and Nearest-Neighbour methods
    Use["PDERS"]           = 1;
    Use["PDERSD"]          = 0;
@@ -47,14 +51,14 @@ int TMVAClassification( TString myMethodList = "" )
    Use["PDEFoam"]         = 1;
    Use["PDEFoamBoost"]    = 0; // uses generalised MVA method boosting
    Use["KNN"]             = 1; // k-nearest neighbour method
-   //
+   
    // Linear Discriminant Analysis
    Use["LD"]              = 1; // Linear Discriminant identical to Fisher
    Use["Fisher"]          = 0;
    Use["FisherG"]         = 0;
    Use["BoostedFisher"]   = 0; // uses generalised MVA method boosting
    Use["HMatrix"]         = 0;
-   //
+   
    // Function Discriminant analysis
    Use["FDA_GA"]          = 1; // minimisation of user-defined function using Genetics Algorithm
    Use["FDA_SA"]          = 0;
@@ -62,32 +66,34 @@ int TMVAClassification( TString myMethodList = "" )
    Use["FDA_MT"]          = 0;
    Use["FDA_GAMT"]        = 0;
    Use["FDA_MCMT"]        = 0;
-   //
+   
    // Neural Networks (all are feed-forward Multilayer Perceptrons)
    Use["MLP"]             = 0; // Recommended ANN
    Use["MLPBFGS"]         = 0; // Recommended ANN with optional training method
    Use["MLPBNN"]          = 1; // Recommended ANN with BFGS training method and bayesian regulator
    Use["CFMlpANN"]        = 0; // Depreciated ANN from ALEPH
    Use["TMlpANN"]         = 0; // ROOT's own ANN
-   Use["DNN"]             = 0;     // Deep Neural Network
+   Use["DNN"]             = 0; // Deep Neural Network
    Use["DNN_GPU"]         = 0; // CUDA-accelerated DNN training.
    Use["DNN_CPU"]         = 0; // Multi-core accelerated DNN.
-   //
+   
    // Support Vector Machine
    Use["SVM"]             = 1;
-   //
+   
    // Boosted Decision Trees
    Use["BDT"]             = 1; // uses Adaptive Boost
    Use["BDTG"]            = 0; // uses Gradient Boost
    Use["BDTB"]            = 0; // uses Bagging
    Use["BDTD"]            = 0; // decorrelation + Adaptive Boost
    Use["BDTF"]            = 0; // allow usage of fisher discriminant for node splitting
-   //
+   
    // Friedman's RuleFit method, ie, an optimised series of cuts ("rules")
    Use["RuleFit"]         = 1;
+
    // ---------------------------------------------------------------
    std::cout << std::endl;
    std::cout << "==> Start TMVAClassification" << std::endl;
+
    // Select methods (don't look at this code - not of interest)
    if (myMethodList != "") {
       for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++) it->second = 0;
@@ -103,6 +109,7 @@ int TMVAClassification( TString myMethodList = "" )
          Use[regMethod] = 1;
       }
    }
+
    // --------------------------------------------------------------------------------------------------
    // Here the preparation phase begins
    // Read training and test data
@@ -112,12 +119,15 @@ int TMVAClassification( TString myMethodList = "" )
       gSystem->Exec("curl -O http://root.cern.ch/files/tmva_class_example.root");
    TFile *input = TFile::Open( fname );
    std::cout << "--- TMVAClassification       : Using input file: " << input->GetName() << std::endl;
+
    // Register the training and test trees
    TTree *signalTree     = (TTree*)input->Get("TreeS");
    TTree *background     = (TTree*)input->Get("TreeB");
+
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
    TString outfileName( "TMVA.root" );
    TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
+
    // Create the factory object. Later you can choose the methods
    // whose performance you'd like to investigate. The factory is
    // the only TMVA object you have to interact with
@@ -131,6 +141,7 @@ int TMVAClassification( TString myMethodList = "" )
    TMVA::Factory *factory = new TMVA::Factory( "TMVAClassification", outputFile,
                                                "!V:!Silent:Color:DrawProgressBar:Transformations=I;D;P;G,D:AnalysisType=Classification" );
    TMVA::DataLoader *dataloader=new TMVA::DataLoader("dataset");
+
    // If you wish to modify default settings
    // (please check "src/Config.h" to see all available global options)
    //
@@ -143,17 +154,21 @@ int TMVAClassification( TString myMethodList = "" )
    dataloader->AddVariable( "myvar2 := var1-var2", "Expression 2", "", 'F' );
    dataloader->AddVariable( "var3",                "Variable 3", "units", 'F' );
    dataloader->AddVariable( "var4",                "Variable 4", "units", 'F' );
+
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
    // input variables, the response values of all trained MVAs, and the spectator variables
    dataloader->AddSpectator( "spec1 := var1*2",  "Spectator 1", "units", 'F' );
    dataloader->AddSpectator( "spec2 := var1*3",  "Spectator 2", "units", 'F' );
+
    // global event weights per tree (see below for setting event-wise weights)
    Double_t signalWeight     = 1.0;
    Double_t backgroundWeight = 1.0;
+
    // You can add an arbitrary number of signal or background trees
    dataloader->AddSignalTree    ( signalTree,     signalWeight );
    dataloader->AddBackgroundTree( background, backgroundWeight );
+
    // To give different trees for training and testing, do as follows:
    //
    //     dataloader->AddSignalTree( signalTrainingTree, signalTrainWeight, "Training" );
@@ -192,13 +207,16 @@ int TMVAClassification( TString myMethodList = "" )
    // // --- end ------------------------------------------------------------
    // ```
    // End of tree registration
+
    // Set individual event weights (the variables must exist in the original TTree)
    // -  for signal    : `dataloader->SetSignalWeightExpression    ("weight1*weight2");`
    // -  for background: `dataloader->SetBackgroundWeightExpression("weight1*weight2");`
    dataloader->SetBackgroundWeightExpression( "weight" );
+
    // Apply additional cuts on the signal and background samples (can be different)
    TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
    TCut mycutb = ""; // for example: TCut mycutb = "abs(var1)<0.5";
+
    // Tell the dataloader how to use the training and testing events
    //
    // If no numbers of events are given, half of the events in the tree are used

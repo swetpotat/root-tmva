@@ -14,8 +14,8 @@ def main():
 	gROOT.SetBatch(True)
 
 	# Open root files
-	sig_file = TFile('/home/pche3675/summer2018/electronmlpid/CentralElectrons_MCdata/data/MC_SigElectrons_2000000ev.root')
-	bkg_file = TFile('/home/pche3675/summer2018/electronmlpid/CentralElectrons_MCdata/data/MC_BkgElectrons_2000000ev.root')
+	sig_file = TFile('/home/pche3675/summer2018/root-tmva/project/data/MC_SigElectrons_2000000ev.root')
+	bkg_file = TFile('/home/pche3675/summer2018/root-tmva/project/data/MC_BkgElectrons_2000000ev.root')
 
 	# Retrieve the ntuple
 	sig_tree = sig_file.Get('data')

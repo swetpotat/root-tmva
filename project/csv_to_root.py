@@ -6,7 +6,7 @@ hfile = TFile('MC_SigBkgElectrons_500000ev.root','RECREATE')
 print("Filling up ntuples...")
 
 tree = TTree('data','data')
-tree.ReadFile('data/MC_SigBkgElectrons_500000ev.csv','',',')
+tree.ReadFile('../../electronmlpid/CentralElectrons_MCdata/data/MC_SigBkgElectrons_500000ev.csv','',',')
 
 print("Saving ntuple to file and closing file.") 
 

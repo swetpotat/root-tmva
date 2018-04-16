@@ -28,7 +28,7 @@ import helpers
 
 # Open the input root file. 
 
-myfile = TFile( "data/MC_SigBkgElectrons_2000000ev.root" )
+myfile = TFile( "../../electronmlpid/CentralElectrons_MCdata/data/MC_SigBkgElectrons_2000000ev.root" )
 
 # Retrieve the n-tuple of interest. In this case, the n-tuple's name is
 # "bsig". You may have to use the TBrowser to find the name of the

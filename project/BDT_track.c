@@ -56,10 +56,10 @@ int BDT_track( TString myMethodList = "" ){
    // --------------------------------------------------------------------------------------------------
 
    // Read training data
-   TString fname_training_sig = "./data/MC_SigElectrons_2000000ev.root";
+   TString fname_training_sig = "../../electronmlpid/CentralElectrons_MCdata/data/MC_SigElectrons_2000000ev.root";
    if (gSystem->AccessPathName( fname_training_sig ))  
       std::cout << "FILE DOES NOT EXIST" << std::endl;
-   TString fname_training_bkg = "./data/MC_BkgElectrons_2000000ev.root";
+   TString fname_training_bkg = "../../electronmlpid/CentralElectrons_MCdata/data/MC_BkgElectrons_2000000ev.root";
    if (gSystem->AccessPathName( fname_training_bkg ))  
       std::cout << "FILE DOES NOT EXIST" << std::endl;
    TFile *input_training_sig = TFile::Open( fname_training_sig );
@@ -72,10 +72,10 @@ int BDT_track( TString myMethodList = "" ){
    TTree *background_training     = (TTree*)input_training_bkg->Get("data");
 
    // Read test data
-   TString fname_testing_sig = "./data/MC_SigElectrons_500000ev.root";
+   TString fname_testing_sig = "../../electronmlpid/CentralElectrons_MCdata/data/MC_SigElectrons_500000ev.root";
    if (gSystem->AccessPathName( fname_testing_sig ))
    	  std::cout << "FILE DOES NOT EXIST" << std::endl;
-   TString fname_testing_bkg = "./data/MC_BkgElectrons_500000ev.root";
+   TString fname_testing_bkg = "../../electronmlpid/CentralElectrons_MCdata/data/MC_BkgElectrons_500000ev.root";
    if (gSystem->AccessPathName( fname_testing_bkg ))
    	  std::cout << "FILE DOES NOT EXIST" << std::endl;
    TFile *input_testing_sig = TFile::Open( fname_testing_sig );

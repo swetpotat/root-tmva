@@ -8,7 +8,7 @@ out_bkg = csv.writer(open(filename_bkg, 'w+'), delimiter = ',')
 
 counter = 0
 
-with open('data/MC_SigBkgElectrons_500000ev.csv') as f:
+with open('../../electronmlpid/CentralElectrons_MCdata/data/MC_SigBkgElectrons_500000ev.csv') as f:
 	csvfile = csv.reader(f, delimiter = ',')
 	for row in csvfile:
 		if counter != 0:

@@ -1,3 +1,8 @@
-*.c~
 *.root
+*.pdf
+*.py~
+data/
+plots/
+__pycache__/
+*.c~
 dataset/
